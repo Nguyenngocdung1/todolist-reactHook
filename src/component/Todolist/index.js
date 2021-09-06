@@ -25,10 +25,7 @@ function List() {
 
     const doneEditItemList = (id) => {
       setToggleId(-1);
-      const item = {
-        id: id,
-        name: inputEdit.current.value,
-      }
+      const item = inputEdit.current.value;
       dispatch(editItem(id, item))
       debugger;
     }
@@ -54,7 +51,7 @@ function List() {
                         value={editInput}
                         onChange={handeInputEdit}
                       />
-                      <Button onClick={() => toggleEdit(item.id, item.name)}>Sửa</Button>
+                      <Button style={toggleId !== index ? {} : {display: "none"}} onClick={() => toggleEdit(item.id, item.name)}>Sửa</Button>
                       <Button onClick={() => doneEditItemList(item.id)}>Xong</Button>
                     </div>
                   )

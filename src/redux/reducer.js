@@ -30,7 +30,7 @@ const listReducer = (state = initialState, action) => {
             return [...state]
         }
         case EDIT_ITEM: {
-            state[action.id] = action.item;
+            state[action.id].name = action.item;
             return [...state]
         }
         default: {
