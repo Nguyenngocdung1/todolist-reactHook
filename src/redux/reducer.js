@@ -1,4 +1,4 @@
-import { ADD_ITEM, GET_ITEM } from './actionType';
+import { ADD_ITEM, DELETE_ITEM, EDIT_ITEM } from './actionType';
 
 const initialState = [
         {
@@ -23,6 +23,14 @@ const listReducer = (state = initialState, action) => {
     switch (action.type){
         case ADD_ITEM: {
             state.push(action.item);
+            return [...state]
+        }
+        case DELETE_ITEM: {
+            state.splice(action.id, 1);
+            return [...state]
+        }
+        case EDIT_ITEM: {
+            state[action.id] = action.item;
             return [...state]
         }
         default: {
