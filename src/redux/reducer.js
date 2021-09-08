@@ -1,31 +1,34 @@
-import { ADD_ITEM, DELETE_ITEM, EDIT_ITEM, SEARCH_ITEM, GET_ITEM } from './actionType';
+import { ADD_ITEM, DELETE_ITEM, EDIT_ITEM, SEARCH_ITEM, GET_ITEM, CONFIRM_STATUS } from './actionType';
 
 const initialState = {
     list: [
         {
             id: 0,
             name: 'Ngọc Dũng',
+            status: false,
         },
         {
             id: 1,
             name: 'Hà Hưng',
+            status: false,
         },
         {
             id: 2,
             name: 'Danh Huỳnh',
+            status: false,
         },
         {
             id: 3,
             name: 'Hiển Hảo',
+            status: false,
         },
     ],
-    listSearch: [],
+    keySearch: '',
 }
 
 const listReducer = (state = initialState, action) => {
     switch (action.type){
         case ADD_ITEM: {
-            debugger;
             return {
                 ...state,
                 list: [
@@ -52,15 +55,21 @@ const listReducer = (state = initialState, action) => {
             }
         }
         case SEARCH_ITEM: {
-            const newState = state.list.filter(item => item.name.includes(action.item));
             return {
                 ...state,
-                listSearch: newState,                
+                keySearch: action.item,
             }
         }
         case GET_ITEM: {
-            state.list = initialState
             return [...state]
+        }
+        case CONFIRM_STATUS: {
+            debugger;
+            return {
+                ...state,
+                ...state.list[action.id].status = action.status,
+            };
+
         }
         default: {
             return state;
