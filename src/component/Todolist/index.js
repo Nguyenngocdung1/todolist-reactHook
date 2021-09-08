@@ -11,7 +11,11 @@ function List() {
     const [toggleId, setToggleId] = useState(-1);
     const [editInput, setEditInput] = useState('');
 
-    const list = useSelector(state => state.list);
+    const listItem = useSelector(state => state.list.list);
+    const listSearch = useSelector(state => state.list.listSearch);
+
+    const list = listSearch.length > 0 ? listSearch : listItem;  
+
     const dispatch = useDispatch();
 
     const deleteItemList = (id) => {
@@ -33,10 +37,10 @@ function List() {
     const handeInputEdit = (even) => {
       setEditInput(even.target.value);
     }
-
+    debugger;
     return (
         <div>
-              {list && list.map((item, index) => {
+              {list.length > 0 ? list.map((item, index) => {
                   return (
                     <div className="list-item">
                       <Input className="input-check" type="checkbox" />
@@ -46,16 +50,18 @@ function List() {
                       </div>
                       <Button onClick={() => deleteItemList(item.id)}>Xóa</Button>
                       <input 
-                        style={toggleId === index ? {} : {display: "none"}} 
+                        style={toggleId === item.id ? {} : {display: "none"}} 
                         ref={inputEdit}
                         value={editInput}
                         onChange={handeInputEdit}
                       />
-                      <Button style={toggleId !== index ? {} : {display: "none"}} onClick={() => toggleEdit(item.id, item.name)}>Sửa</Button>
-                      <Button onClick={() => doneEditItemList(item.id)}>Xong</Button>
+                      <Button style={toggleId !== item.id ? {} : {display: "none"}} onClick={() => toggleEdit(item.id, item.name)}>Sửa</Button>
+                      <Button style={toggleId === item.id ? {} : {display: "none"}} onClick={() => doneEditItemList(item.id)}>Xong</Button>
                     </div>
                   )
-              })}
+              }) : (
+                <div>Danh sách rỗng !</div>
+              )}
           </div>
     )
 }

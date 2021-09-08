@@ -1,4 +1,4 @@
-import { ADD_ITEM, GET_ITEM, DELETE_ITEM, EDIT_ITEM } from './actionType';
+import { ADD_ITEM, DELETE_ITEM, EDIT_ITEM, SEARCH_ITEM, GET_ITEM } from './actionType';
 
 export const addItem = (item) => ({
     type: ADD_ITEM,
@@ -18,5 +18,10 @@ export const editItem = (id, item) => ({
     type: EDIT_ITEM,
     id,
     item,
+})
+
+export const searchItem = (item) => ({
+    type: SEARCH_ITEM,
+    item
 })
 

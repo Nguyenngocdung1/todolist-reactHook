@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import {useSelector, useDispatch} from 'react-redux'
 import {Button,Input} from 'reactstrap';
-import {addItem} from '../../redux/actions';
+import {addItem, searchItem} from '../../redux/actions';
 
 function Header() {
-    const list = useSelector(state => state.list);
+    const list = useSelector(state => state.list.list);
+
     const dispatch = useDispatch();
 
     const itemAdd = React.createRef();
+
     const [textInput, setTextInput] = useState("");
     
     const addItemList = () => {
@@ -26,6 +28,14 @@ function Header() {
       setTextInput("");
     }
 
+    const searchItemList = () => {
+      // dispatch(getItem());
+      dispatch(searchItem(itemAdd.current.value))
+      // list.filter(item => item.name.includes(itemAdd.current.value))
+      // debugger;
+      // setList(list);
+    }
+
     const onUpdate = (even) => {
       const {value} = even.target
       setTextInput(value);
@@ -37,6 +47,7 @@ function Header() {
             <div style={{display: 'flex', width: 600, marginLeft: 700}}>
                 <Input className="input-todolist" placeholder="Hãy nhập gì đó" innerRef={itemAdd} onChange={onUpdate} value={textInput}/>
                 <Button className="button-todolist" onClick={addItemList}>Thêm</Button>
+                <Button className="button-todolist" onClick={searchItemList}>Tìm Kiếm</Button>
             </div>
         </div>
     )

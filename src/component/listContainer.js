@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { addItem, deleteItem, editItem } from '../redux/actions';
+import { addItem, deleteItem, editItem, searchItem, getItem } from '../redux/actions';
 import TodoList from './index';
 
 const mapStateToProps = (state) => ({
@@ -15,6 +15,12 @@ const mapDispatchToProps = (dispatch) => ({
     },
     editItem: (id, item) => {
         dispatch(editItem(id, item));
+    },
+    searchItem: (item) => {
+        dispatch(searchItem(item));
+    },
+    getItem: () => {
+        dispatch(getItem());
     }
 })
 
