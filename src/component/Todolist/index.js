@@ -1,30 +1,35 @@
 import React, { useState } from 'react';
-import {useSelector, useDispatch} from 'react-redux'
+import { useDispatch} from 'react-redux'
 import {Button,Input} from 'reactstrap';
-import { deleteItem, editItem } from '../../redux/actions';
-
+import { deleteItem, editItem, confirmCompeletedItem } from '../../redux/actions';
+import Header from '../Header/index'
+import Footer from '../Footer/index';
+import Patination from './Patination';
 import '../index.css'
 
-function List() {
+function List(props) {
     //Gia tri chinh sua !
     const inputEdit = React.createRef();
+    const [list, setList ] = useState(props.list);
+    const [patination, setPatination] = useState({
+      page: 1,
+      limit: 4,
+      totalRows: list.length,
+    })
 
     // Khởi tạo state thông qua useState
     const [toggleId, setToggleId] = useState(-1);
     const [editInput, setEditInput] = useState('');
-
-    //Lấy dữ liệu từ state: State list, keySearch
-    const list = useSelector(state => state.list.list);
-    const keySearch = useSelector(state => state.list.keySearch);
-
-    const [listItem, setListItem] = useState(list.filter(item => item.name.includes(keySearch)));
 
     // dispatch goi actions: k cần thông qua container
     const dispatch = useDispatch();
 
     //Xóa item
     const deleteItemList = (id) => {
+      //Thay doi reducer
       dispatch(deleteItem(id));
+      //Thay doi list
+      setList(list.filter(item => item.id !== id))
     }
 
     // bật ô input sửa item
@@ -37,8 +42,14 @@ function List() {
     const doneEditItemList = (id) => {
       setToggleId(-1);
       const item = inputEdit.current.value;
+      //thay doi reducer
       dispatch(editItem(id, item))
+      //thay doi list
+      const indexID = list.findIndex(item => item.id === id);
+      list[indexID].name = item;
+      setList(list)
     }
+
 
     //check sự thay đổi của ô input chỉnh sửa
     const handeInputEdit = (even) => {
@@ -46,15 +57,17 @@ function List() {
     }
 
     const handleTypeItem = (even, id) => {
-      let newState = [...list];
-      newState[id].status = even.target.checked;
-      setListItem(newState)
+      dispatch(confirmCompeletedItem(even.target.checked, id))
     }
-    debugger;
+
+    function onPageChange(page) {
+      console.log(page);
+    }
 
     return (
         <div>
-              {listItem.length > 0 ? listItem.map((item, index) => {
+              <Header list={list} setList={setList}/>
+              {list.length > 0 ? list.map((item, index) => {
                   return (
                     <div className="list-item">
                       <Input className="input-check" type="checkbox" onChange={(even) => handleTypeItem(even, item.id)} checked={item.status}/>
@@ -72,10 +85,15 @@ function List() {
                       <Button style={toggleId !== item.id ? {} : {display: "none"}} onClick={() => toggleEdit(item.id, item.name)}>Sửa</Button>
                       <Button style={toggleId === item.id ? {} : {display: "none"}} onClick={() => doneEditItemList(item.id)}>Xong</Button>
                     </div>
+                    
                   )
               }) : (
                 <div>Danh sách rỗng !</div>
               )}
+              <Patination patination={patination} onPageChange={onPageChange}/>
+
+              <Footer />
+
           </div>
     )
 }

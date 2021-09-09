@@ -29,6 +29,7 @@ const initialState = {
 const listReducer = (state = initialState, action) => {
     switch (action.type){
         case ADD_ITEM: {
+            debugger;
             return {
                 ...state,
                 list: [
@@ -55,6 +56,7 @@ const listReducer = (state = initialState, action) => {
             }
         }
         case SEARCH_ITEM: {
+            debugger;
             return {
                 ...state,
                 keySearch: action.item,

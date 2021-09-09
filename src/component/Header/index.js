@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import {useSelector, useDispatch} from 'react-redux'
+import { useDispatch} from 'react-redux'
 import {Button,Input} from 'reactstrap';
-import {addItem, searchItem} from '../../redux/actions';
+import {addItem} from '../../redux/actions';
 
-function Header() {
-    const list = useSelector(state => state.list.list);
+function Header(props) {
+    const {list} = props
 
     const dispatch = useDispatch();
 
@@ -24,16 +24,14 @@ function Header() {
         id: itemFinal.id + 1,
         name: itemAdd.current.value,
       }
+      //Thay doi reducer
       dispatch(addItem(item))
+      //Thay doi list
+      props.setList((prevState) => [
+        ...prevState,
+        item,
+      ])
       setTextInput("");
-    }
-
-    const searchItemList = () => {
-      // dispatch(getItem());
-      dispatch(searchItem(itemAdd.current.value))
-      // list.filter(item => item.name.includes(itemAdd.current.value))
-      // debugger;
-      // setList(list);
     }
 
     const onUpdate = (even) => {
@@ -47,7 +45,7 @@ function Header() {
             <div style={{display: 'flex', width: 600, marginLeft: 700}}>
                 <Input className="input-todolist" placeholder="Hãy nhập gì đó" innerRef={itemAdd} onChange={onUpdate} value={textInput}/>
                 <Button className="button-todolist" onClick={addItemList}>Thêm</Button>
-                <Button className="button-todolist" onClick={searchItemList}>Tìm Kiếm</Button>
+                {/*<Button className="button-todolist" onClick={searchItemList}>Tìm Kiếm</Button>*/}
             </div>
         </div>
     )
